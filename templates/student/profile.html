@@ -1,0 +1,131 @@
+{% extends '../student_base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- profile section -->
+    <section class="student_profile py-5 container">
+        <h2 class="text-warning fw-bolder mb-5">Profile Details</h2>
+        <div class="d-md-flex justify-content-around align-items-start">
+            <div class="flex-fill p-md-4">
+                <!-- name -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name=" " value="{{ user.name | safe }}" disabled
+                        aria-disabled="disabled">
+                </div>
+                <!-- email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name=" " value="{{ user.email | safe }}" disabled
+                        aria-disabled="disabled">
+                </div>
+                <!-- phone -->
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ user.phone | safe }}" disabled
+                        aria-disabled="disabled">
+                </div>
+                <!-- bio -->
+                <div class="mb-3">
+                    <label for="bioInput" class="form-label">Short Bio</label>
+                    <textarea type="text" class="form-control" id="bioInput" required aria-required name="bio"
+                        disabled>{{ user.bio | safe }}</textarea>
+                </div>
+            </div>
+            <div class="flex-fill p-md-4">
+                <!-- skills -->
+                <div class="mb-3">
+                    <label for="skillInput" class="form-label">Your Skills</label>
+                    <input type="text" class="form-control" id="skillInput" required name="skills"
+                        value="{{ user.skills | safe }}" disabled>
+                </div>
+                <!-- LI -->
+                <div class="mb-3">
+                    <label for="LinkedIn" class="form-label">LinkedIn Link</label>
+                    <input class="form-control" type="url" name="linkedIn_link" id="LinkedIn"
+                        value="{{ user.linkedIn_link | safe }}" required aria-required disabled>
+                </div>
+                <!-- GH Link -->
+                <div class="mb-3">
+                    <label for="github" class="form-label">GitHub Link</label>
+                    <input class="form-control" type="url" name="gitHub_link" id="github" value="{{ user.gitHub_link | safe }}"
+                        required aria-required disabled>
+                </div>
+                <!-- headshot -->
+                <!-- need to figure out download part -->
+                <div class="mb-3">
+                    <label for="headshot" class="form-label">Passport Size Image:</label>
+                    {% if user.headshot %}
+                    <a href="{{ user.headshot.url }}" target="_blank" class="ms-3" id="download-headshot"
+                    download="{{ user.headshot.url }}">Download</a>
+                    {% else %}
+                    <a href="{% static 'img/logo.png' %}" target="_blank" class="ms-3" id="download-headshot"
+                    download="{% static 'img/logo.png' %}">Download</a>
+                    {% endif %}
+                </div>
+                <!-- resume -->
+                <div class="mb-3">
+                    <label for="resumeFile" class="form-label">Resume:</label>
+                    <a href="{{ user.resume.url }}" class="ms-3" id="download-resume"
+                        download="{{ user.resume.url }}">Download</a>
+                </div>
+                <button type="button" id="update-profile" class="mt-3 btn btn-warning w-100" data-bs-toggle="modal"
+                    data-bs-target="#profileUpdate">Update Details</button>
+
+            </div>
+
+            <!-- updation modal -->
+            <div class="modal fade" id="profileUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Update your profile</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <!-- student form -->
+                            <form class="" method="POST" enctype="multipart/form-data" action="../update-student-profile/">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="bioInput" class="form-label">Short Bio</label>
+                                    <textarea type="text" class="form-control" id="bioInput" required aria-required
+                                        name="bio"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="skillInput" class="form-label">Your Skills</label>
+                                    <input type="text" class="form-control" id="skillInput" required name="skills"
+                                        placeholder="html, css">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="LinkedIn" class="form-label">LinkedIn Link</label>
+                                    <input class="form-control" type="url" name="linkedIn_link" id="LinkedIn" required aria-required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="github" class="form-label">GitHub Link</label>
+                                    <input class="form-control" type="url" name="gitHub_link" id="github" required aria-required>
+                                </div>
+                                <!-- need to figure out download part -->
+                                <div class="mb-3">
+                                    <label for="headshot" class="form-label">Passport Size Image</label>
+                                    <input class="form-control" type="file" id="headshot" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="resumeFile" class="form-label">Resume</label>
+                                    <input class="form-control" name="resume" type="file" id="resumeFile" required>
+                                </div>
+                                <button type="submit" id="update-profile" class="mt-3 btn btn-warning w-100"
+                                    data-bs-toggle="modal" data-bs-target="#profileUpdate">Submit</button>
+                            </form>
+                            <!-- form end -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}
